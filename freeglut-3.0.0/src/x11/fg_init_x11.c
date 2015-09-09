@@ -31,7 +31,7 @@
 #include <GL/freeglut.h>
 #include "fg_internal.h"
 #include "fg_init.h"
-#include "egl/fg_init_egl.h"
+//#include "egl/fg_init_egl.h"
 
 /* Return the atom associated with "name". */
 static Atom fghGetAtom(const char * name)
