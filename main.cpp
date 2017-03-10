@@ -9,6 +9,7 @@ static int stacks = 16;
 static double zoom = .01;
 static int width = 0;
 static int height = 0;
+static float tx=0, ty=0;
 static float thetax=0, thetay=0, thetaz=0;
 
 GLUquadric* pOrigin;
@@ -32,7 +33,8 @@ static void key(unsigned char key, int x, int y)
     {
     case 27 :
     case 'Q':
-    case 'q': glutLeaveMainLoop () ;      break;
+    case 'q': 
+        glutLeaveMainLoop () ; break;
 
     case '=':
     case '+':
@@ -50,32 +52,22 @@ static void key(unsigned char key, int x, int y)
 
     case ' ':
         zoom = 0.01;
-        thetax=0;
-        thetay=0;
-        thetaz=0;
-        printf("%g zoom minus\n", zoom); 
+        tx=0; ty=0;
+        thetax=0; thetay=0; thetaz=0;
         break;
 
     case 'x':
-        thetax -= 10;
-        break;
+        thetax -= 10; break;
     case 'X':
-        thetax += 10;
-        break;
-
+        thetax += 10; break; 
     case 'y':
-        thetay -= 10;
-        break;
+        thetay -= 10; break;
     case 'Y':
-        thetay += 10;
-        break;
-
+        thetay += 10; break;
     case 'z':
-        thetaz -= 10;
-        break;
+        thetaz -= 10; break;
     case 'Z':
-        thetaz += 10;
-        break;
+        thetaz += 10; break;
 
     default:
         break;
@@ -84,6 +76,25 @@ static void key(unsigned char key, int x, int y)
     glutPostRedisplay();
 }
 
+// ---------------------------------------------------------------------------
+static void onSpecialKeyPressed(int key, int x, int y)
+{
+    switch (key)
+    {
+    case GLUT_KEY_LEFT:     // left arrow
+        tx -=0.25; break;
+    case GLUT_KEY_RIGHT:    // right arrow
+        tx +=0.25; break;
+    case GLUT_KEY_UP:       // up arrow
+        ty +=0.25; break;
+    case GLUT_KEY_DOWN:     // down arrow
+        ty -=0.25; break;
+    }
+
+    glutPostRedisplay();
+}
+
+// ---------------------------------------------------------------------------
 static void resize(int w, int h)
 {
     width = w;
@@ -107,6 +118,8 @@ static void display(void)
     glRotatef(thetax, 1, 0, 0);
     glRotatef(thetay, 0, 1, 0);
     glRotatef(thetaz, 0, 0, 1);
+
+    glTranslatef(tx, ty, 0);
 
     // origin
     glColor4d(1, 1, 1, 0.5);
@@ -198,6 +211,7 @@ int main(int argc, char* argv[])
     glutReshapeFunc(resize);
     glutDisplayFunc(display);
     glutKeyboardFunc(key);
+    glutSpecialFunc(onSpecialKeyPressed);
 
     glClearColor(0,0,0,.5);
     glEnable(GL_CULL_FACE);
