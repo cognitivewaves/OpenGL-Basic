@@ -27,7 +27,7 @@ bool double_equal(double a, double b)
     return false;
 }
 
-static void key(unsigned char key, int x, int y)
+static void onKeyPressed(unsigned char key, int x, int y)
 {
     switch (key)
     {
@@ -95,14 +95,14 @@ static void onSpecialKeyPressed(int key, int x, int y)
 }
 
 // ---------------------------------------------------------------------------
-static void resize(int w, int h)
+static void onResize(int w, int h)
 {
     width = w;
     height = h;
     glViewport(0, 0, width, height);
 }
 
-static void display(void)
+static void onDraw(void)
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear Screen And Depth Buffer
 
@@ -168,7 +168,7 @@ static void display(void)
     glutSwapBuffers();
 }
 
-void AppInit()
+void createGluObjects()
 {
     pOrigin = gluNewQuadric();
 
@@ -182,7 +182,7 @@ void AppInit()
     pArrowZ = gluNewQuadric();
 }
 
-void AppCleanup()
+void deleteGluObjects()
 {
     gluDeleteQuadric(pOrigin);
 
@@ -206,11 +206,9 @@ int main(int argc, char* argv[])
 
     glutCreateWindow("Basic OpenGL using FreeGLUT");
 
-    AppInit();
-
-    glutReshapeFunc(resize);
-    glutDisplayFunc(display);
-    glutKeyboardFunc(key);
+    glutReshapeFunc(onResize);
+    glutDisplayFunc(onDraw);
+    glutKeyboardFunc(onKeyPressed);
     glutSpecialFunc(onSpecialKeyPressed);
 
     glClearColor(0,0,0,.5);
@@ -238,9 +236,11 @@ int main(int argc, char* argv[])
     glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
     glEnable(GL_COLOR_MATERIAL);
 
+    createGluObjects();
+
     glutMainLoop();
 
-    AppCleanup();
+    deleteGluObjects();
 
 	return 0;
 }
