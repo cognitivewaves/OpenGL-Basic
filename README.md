@@ -1,6 +1,8 @@
 # OpenGL-Basic
 A project to learn the basics of OpenGL.
 
+![Preview](preview.png)
+
 ##FreeGLUT
 >FreeGLUT takes care of all the system-specific chores required for creating windows, initializing OpenGL contexts, and handling input events, to allow for trully portable OpenGL programs.
 
